@@ -1,0 +1,1 @@
+# ONNX MNIST on Web
