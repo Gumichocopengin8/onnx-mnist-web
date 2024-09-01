@@ -54,7 +54,7 @@ function CanvasBoard() {
     ctx.closePath();
   };
 
-  const mouseUp = async () => {
+  const inferenceData = async () => {
     const inputCanvas = inputCanvasEle.current;
     const scaledCanvas = scaledCanvasEle.current;
     if (inputCanvas == null || scaledCanvas == null) {
@@ -154,7 +154,8 @@ function CanvasBoard() {
           onMouseEnter={drawOnCanvas}
           onMouseMove={drawOnCanvas}
           onMouseDown={setPosition}
-          onMouseUp={mouseUp}
+          onMouseUp={inferenceData}
+          onMouseLeave={inferenceData}
           ref={inputCanvasEle}
           className='input-canvas'
         />
