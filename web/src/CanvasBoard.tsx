@@ -1,8 +1,10 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import type * as ort from 'onnxruntime-web';
 
 import './CanvasBoard.css';
-import { argMax, initOnnx, runInference, MNIST_IMAGE_SIDE_SIZE } from './mnist';
+import { argMax, initOnnx, runInference, MNIST_IMAGE_SIDE_SIZE, getNumberColor } from 'mnist';
+import DonutChart from 'components/charts/DonutChart';
+import type { PieSeriesOption } from 'echarts';
 
 type CanvasPosition = {
   x: number;
@@ -50,14 +52,6 @@ function CanvasBoard() {
     ctx.closePath();
   };
 
-  const clearCanvas = () => {
-    const ctx = getCanvasContext(inputCanvasEle.current);
-    const scaledCtx = getCanvasContext(scaledCanvasEle.current);
-
-    ctx?.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-    scaledCtx?.clearRect(0, 0, scaledCtx.canvas.width, scaledCtx.canvas.height);
-  };
-
   const mouseUp = async () => {
     const inputCanvas = inputCanvasEle.current;
     const scaledCanvas = scaledCanvasEle.current;
@@ -102,6 +96,28 @@ function CanvasBoard() {
     }
   };
 
+  const clearCanvas = () => {
+    const ctx = getCanvasContext(inputCanvasEle.current);
+    const scaledCtx = getCanvasContext(scaledCanvasEle.current);
+
+    ctx?.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+    scaledCtx?.clearRect(0, 0, scaledCtx.canvas.width, scaledCtx.canvas.height);
+    setInferenceList(Float32Array.from([]));
+  };
+
+  const donutChartData: PieSeriesOption['data'] = useMemo(() => {
+    const highestIndex = argMax(inferenceList);
+    const data: PieSeriesOption['data'] = Array.from(inferenceList)
+      .map((d, i) => ({
+        name: i.toString(),
+        value: 10 - Math.abs(d),
+        itemStyle: { color: getNumberColor(i) },
+        selected: i == highestIndex,
+      }))
+      .sort((a, b) => b.value - a.value);
+    return data;
+  }, [inferenceList]);
+
   useEffect(() => {
     let ignore = false;
 
@@ -124,17 +140,27 @@ function CanvasBoard() {
   return (
     <div>
       <div>{inferenceList.length === 0 ? 'None' : argMax(inferenceList)}</div>
+      <div className='main-canvas-container'>
+        <div className='donut-chart'>
+          <DonutChart data={donutChartData} />
+        </div>
+        <canvas
+          width='308'
+          height='308' // 28px * 11. 28 comes from mnist image size (28 * 28)
+          onMouseEnter={drawOnCanvas}
+          onMouseMove={drawOnCanvas}
+          onMouseDown={setPosition}
+          onMouseUp={mouseUp}
+          ref={inputCanvasEle}
+          className='input-canvas'
+        />
+      </div>
       <canvas
-        width='308'
-        height='308' // 28px * 11. 28 comes from mnist image size (28 * 28)
-        onMouseEnter={drawOnCanvas}
-        onMouseMove={drawOnCanvas}
-        onMouseDown={setPosition}
-        onMouseUp={mouseUp}
-        ref={inputCanvasEle}
-        id='main-canvas'
+        ref={scaledCanvasEle}
+        width={MNIST_IMAGE_SIDE_SIZE}
+        height={MNIST_IMAGE_SIDE_SIZE}
+        style={{ display: 'none' }}
       />
-      <canvas ref={scaledCanvasEle} width={MNIST_IMAGE_SIDE_SIZE} height={MNIST_IMAGE_SIDE_SIZE} style={{}} />
       <button onClick={clearCanvas} type='button'>
         Clear
       </button>

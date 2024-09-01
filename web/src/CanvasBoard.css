@@ -1,4 +1,23 @@
-#main-canvas {
-  border: 1px solid skyblue;
-  border-radius: 50%;
+.main-canvas-container {
+  display: grid;
+  grid-template-columns: 1fr;
+  justify-items: center;
+  align-items: center;
+
+  .donut-chart, .input-canvas {
+    grid-row-start: 1;
+    grid-column-start: 1;
+  }
+
+  .donut-chart {
+    width: 400px;
+    height: 400px;
+    z-index: 0;
+  }
+
+  .input-canvas {
+    border: 1px solid skyblue;
+    border-radius: 50%;
+    z-index: 10;
+  }
 }

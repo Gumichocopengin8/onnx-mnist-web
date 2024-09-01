@@ -1,4 +1,5 @@
-:root {
-margin: unset;
-padding: unset;
+:root, body {
+  margin: unset;
+  padding: unset;
+  width: 100vw;
 }
