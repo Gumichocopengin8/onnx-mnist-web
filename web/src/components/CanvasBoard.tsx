@@ -140,7 +140,7 @@ function CanvasBoard() {
   return (
     <div className='base'>
       <Text as='p' size='4' style={{ paddingBottom: '1rem' }}>
-        Draw a digit (0 - 9) on the canvas
+        Draw a digit (0 - 9) in the circle
       </Text>
       <div className='main-canvas-container'>
         <div className='donut-chart'>
