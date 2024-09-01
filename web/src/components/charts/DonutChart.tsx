@@ -12,11 +12,10 @@ function DonutChart({ data }: Props) {
       series: [
         {
           type: 'pie',
-          selectedMode: 'single',
           radius: ['80%', '95%'],
           avoidLabelOverlap: true,
           itemStyle: { borderRadius: 5 },
-          label: { formatter: '{b}', position: 'inside', fontSize: 20 },
+          label: { formatter: '{b}', position: 'inside', fontSize: 15 },
           data,
         },
       ],

@@ -4,7 +4,7 @@ import { Cross2Icon } from '@radix-ui/react-icons';
 import type * as ort from 'onnxruntime-web';
 
 import './CanvasBoard.css';
-import { argMax, initOnnx, runInference, MNIST_IMAGE_SIDE_SIZE, getNumberColor } from 'utils/mnist';
+import { initOnnx, runInference, MNIST_IMAGE_SIDE_SIZE, getNumberColor } from 'utils/mnist';
 import DonutChart from 'components/charts/DonutChart';
 import type { PieSeriesOption } from 'echarts';
 
@@ -44,7 +44,7 @@ function CanvasBoard() {
     }
 
     ctx.beginPath();
-    ctx.lineWidth = 30;
+    ctx.lineWidth = 36;
     ctx.lineCap = 'round';
     ctx.strokeStyle = 'white';
     ctx.moveTo(pos.x, pos.y);
@@ -108,13 +108,11 @@ function CanvasBoard() {
   };
 
   const donutChartData: PieSeriesOption['data'] = useMemo(() => {
-    const highestIndex = argMax(inferenceList);
     const data: PieSeriesOption['data'] = Array.from(inferenceList)
       .map((d, i) => ({
         name: i.toString(),
-        value: 10 - Math.abs(d),
+        value: Math.exp(d), // pytorch/mnist.py uses log_softmax, so convert it back to linear from log
         itemStyle: { color: getNumberColor(i) },
-        selected: i == highestIndex,
       }))
       .sort((a, b) => b.value - a.value);
     return data;
