@@ -15,7 +15,7 @@ function DonutChart({ data }: Props) {
           selectedMode: 'single',
           radius: ['80%', '95%'],
           avoidLabelOverlap: true,
-          itemStyle: { borderRadius: 10, borderColor: '#fff', borderWidth: 2 },
+          itemStyle: { borderRadius: 5 },
           label: { formatter: '{b}', position: 'inside', fontSize: 20 },
           data,
         },

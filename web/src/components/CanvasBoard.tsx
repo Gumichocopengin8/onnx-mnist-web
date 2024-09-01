@@ -1,4 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
+import { Text, Button } from '@radix-ui/themes';
+import { Cross2Icon } from '@radix-ui/react-icons';
 import type * as ort from 'onnxruntime-web';
 
 import './CanvasBoard.css';
@@ -44,7 +46,7 @@ function CanvasBoard() {
     ctx.beginPath();
     ctx.lineWidth = 30;
     ctx.lineCap = 'round';
-    ctx.strokeStyle = 'black';
+    ctx.strokeStyle = 'white';
     ctx.moveTo(pos.x, pos.y);
     setPosition(e);
     ctx.lineTo(e.clientX - rect.x, e.clientY - rect.y);
@@ -138,8 +140,10 @@ function CanvasBoard() {
   }, []);
 
   return (
-    <div>
-      <div>{inferenceList.length === 0 ? 'None' : argMax(inferenceList)}</div>
+    <div className='base'>
+      <Text as='p' size='4' style={{ paddingBottom: '1rem' }}>
+        Draw a digit (0 - 9) on the canvas
+      </Text>
       <div className='main-canvas-container'>
         <div className='donut-chart'>
           <DonutChart data={donutChartData} />
@@ -161,9 +165,10 @@ function CanvasBoard() {
         height={MNIST_IMAGE_SIDE_SIZE}
         style={{ display: 'none' }}
       />
-      <button onClick={clearCanvas} type='button'>
+      <Button onClick={clearCanvas} variant='solid' type='button'>
+        <Cross2Icon />
         Clear
-      </button>
+      </Button>
     </div>
   );
 }
