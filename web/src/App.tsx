@@ -1,5 +1,5 @@
 import './App.css';
-import CanvasBoard from './CanvasBoard';
+import CanvasBoard from 'components/CanvasBoard';
 
 function App() {
   return (

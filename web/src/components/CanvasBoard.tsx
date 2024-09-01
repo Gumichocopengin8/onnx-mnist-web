@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import type * as ort from 'onnxruntime-web';
 
 import './CanvasBoard.css';
-import { argMax, initOnnx, runInference, MNIST_IMAGE_SIDE_SIZE, getNumberColor } from 'mnist';
+import { argMax, initOnnx, runInference, MNIST_IMAGE_SIDE_SIZE, getNumberColor } from 'utils/mnist';
 import DonutChart from 'components/charts/DonutChart';
 import type { PieSeriesOption } from 'echarts';
 
