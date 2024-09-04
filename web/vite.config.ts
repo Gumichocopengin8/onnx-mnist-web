@@ -19,6 +19,17 @@ export default defineConfig({
     tsconfigPaths(),
     visualizer(),
   ],
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          react: ['react', 'react-dom'],
+          onnx: ['onnxruntime-web'],
+          echarts: ['echarts'],
+        },
+      },
+    },
+  },
   server: {
     port: 3000,
   },
