@@ -3,3 +3,4 @@ data/
 __pycache__/
 mnist_cnn.pt
 mnist_cnn.onnx
+mnist_cnn.infer.onnx

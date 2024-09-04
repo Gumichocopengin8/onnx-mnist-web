@@ -5,7 +5,7 @@ ort.env.wasm.wasmPaths = './dist/'; // defined in vite.config.ts as viteStaticCo
 export const MNIST_IMAGE_SIDE_SIZE = 28;
 
 export const initOnnx = (): Promise<ort.InferenceSession> => {
-  const session = ort.InferenceSession.create('./mnist_cnn.onnx', {
+  const session = ort.InferenceSession.create('./mnist_cnn.quant.onnx', {
     enableProfiling: true,
     executionProviders: ['wasm'],
   });
