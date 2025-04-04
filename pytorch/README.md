@@ -2,10 +2,10 @@
 
 ## How to Run
 
-- `python3 -m venv .venv`
+- `python3.12 -m venv .venv`
 - `source .venv/bin/activate`
 - `pip install -r requirements.txt`
-- `python mnist.py`
+- `python mnist.py --save-model`
 
 The code is from https://github.com/pytorch/examples/tree/main/mnist.
 
