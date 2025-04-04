@@ -32,7 +32,7 @@ def main():
     mnist_model.eval()
     dymmy_input = torch.zeros(1, 1, 28, 28)
     torch.onnx.export(
-        mnist_model, dymmy_input, INTERMEDIATE_OUTPUT_DIR / ONNX_OUTPUT, verbose=True
+        model=mnist_model, args=(dymmy_input,), f=INTERMEDIATE_OUTPUT_DIR / ONNX_OUTPUT, verbose=True
     )
     quantizate_onnx_model()
 
