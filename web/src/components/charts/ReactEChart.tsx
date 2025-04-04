@@ -24,7 +24,7 @@ interface Props {
 }
 
 function ReactECharts({ option, style, group, settings = {}, eventFunctions }: Props) {
-  const chartRef = useRef<HTMLDivElement>(null);
+  const chartRef = useRef<HTMLDivElement | null>(null);
   const [width, height] = useResize(chartRef);
   const [echart, setEchart] = useState<echarts.ECharts | undefined>(undefined);
 

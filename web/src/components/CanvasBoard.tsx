@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { Text, Button } from '@radix-ui/themes';
+import { Text, Button, Spinner, Flex } from '@radix-ui/themes';
 import { Cross2Icon } from '@radix-ui/react-icons';
 import type * as ort from 'onnxruntime-web';
 
@@ -23,6 +23,7 @@ function CanvasBoard() {
   const [ortSession, setOrtSession] = useState<ort.InferenceSession | undefined>(undefined);
   const [pos, setPos] = useState<CanvasPosition>({ x: 0, y: 0 });
   const [inferenceList, setInferenceList] = useState<Float32Array>(Float32Array.from([]));
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const setPosition = (e: React.MouseEvent<HTMLCanvasElement, MouseEvent>) => {
     const rect = inputCanvasEle.current?.getBoundingClientRect();
@@ -121,21 +122,33 @@ function CanvasBoard() {
   useEffect(() => {
     let ignore = false;
 
-    try {
-      if (!ignore) {
-        initOnnx().then((session) => {
+    if (!ignore) {
+      setIsLoading(true);
+      initOnnx()
+        .then((session) => {
           setOrtSession(session);
           console.log('session initialized');
+        })
+        .catch((e) => {
+          console.error('failed to create ONNX session:', e);
+        })
+        .finally(() => {
+          setIsLoading(false);
         });
-      }
-    } catch (e) {
-      console.error('failed to create ONNX session:', e);
     }
-
     return () => {
       ignore = true;
     };
   }, []);
+
+  if (isLoading) {
+    return (
+      <Flex align='center' gap='3'>
+        <Spinner size='3' />
+        <Text size='5'>Loading MNIST Model</Text>
+      </Flex>
+    );
+  }
 
   return (
     <div className='base'>
